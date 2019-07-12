@@ -2,11 +2,10 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-var axios = require("axios");
-var cheerio = require("cheerio");
+
+const routes = require("./controllers");
 
 // Requiring DB models
-// var db = require("./models");
 
 var PORT = process.env.PORT || 3001;
 
@@ -21,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Making public a static folder
 app.use(express.static("public"));
+
+app.use(routes)
 
 // Connecting to the Mongo DB
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
