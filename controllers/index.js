@@ -3,7 +3,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models");
 
-router.use(function(req, res) {
+router.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, "../client/public/index.html"));
 });
 
