@@ -2,11 +2,11 @@ const router = require("express").Router();
 var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models");
-const path = require("path");
+// const path = require("path");
 
-router.use(function(req, res) {
-  res.sendFile(path.join(__dirname, "../client/public/index.html"));
-});
+// router.use(function(req, res) {
+//   res.sendFile(path.join(__dirname, "../client/public/index.html"));
+// });
 
 router.get("/", function(req, res) {
   console.log("Hi")
