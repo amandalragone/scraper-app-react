@@ -3,6 +3,9 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models");
 
+router.use(function(req, res) {
+  res.sendFile(path.join(__dirname, "../client/public/index.html"));
+});
 
 router.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios
