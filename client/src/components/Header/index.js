@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import ArticleResults from "../ArticleResults";
 import axios from "axios";
+import Footer from '../Footer';
+
 
 class Header extends React.Component {
 
@@ -113,6 +115,8 @@ class Header extends React.Component {
                 seeSaved={this.state.seeSaved}
                 articles={this.state.articles}
                 />
+
+                <Footer/>
 
             </div>
 

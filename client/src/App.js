@@ -1,7 +1,6 @@
 import React from 'react';
-import Wrapper from './components/Wrapper';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Header from './components/Header';
-import Footer from './components/Footer';
 import './App.css';
 
 class App extends React.Component {
@@ -10,10 +9,9 @@ class App extends React.Component {
 
     return (
 
-      <Wrapper>
-        <Header/>
-        <Footer/>
-      </Wrapper>
+      <Router>
+          <Route exact path="/" component={Header}/>
+      </Router>
     )
   }
 }
