@@ -18,7 +18,7 @@ router.get("/scrape", function(req, res) {
         .find("a")
         .children("h3")
         .text();
-  
+
         result.link =  $(this)
         .children("a")
         .attr("href");
@@ -27,10 +27,14 @@ router.get("/scrape", function(req, res) {
         .children("p")
         .text();
 
-        console.log(result)
+        db.Article.findOne({
+          title: result.title
+        }).then(response => {
 
-        //  Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
+          if (response) {
+            console.log("Article exists")
+          } else {
+            db.Article.create(result)
         .then(function(dbArticle) {
           // View the added result in the console
           console.log(dbArticle);
@@ -39,6 +43,10 @@ router.get("/scrape", function(req, res) {
           // If an error occurred, log it
           console.log(err);
         });
+          }
+
+        }).catch(err => console.log(err))
+
       })
 
     // Send a message to the client
@@ -52,23 +60,9 @@ router.get("/findarticles", function(req, res) {
   db.Article.find({}).then(response => res.json(response)).catch(err => console.log(err))
 
 })
-  
-  // Route for getting all Articles from the db
-  router.get("/articles", function(req, res) {
-    // Grab every document in the Articles collection
-    db.Article.find({})
-      .then(function(dbArticle) {
-        // If we were able to successfully find Articles, send them back to the client
-        res.json(dbArticle);
-      })
-      .catch(function(err) {
-        // If an error occurred, send it to the client
-        res.json(err);
-      });
-  });
-  
+
   // Route for grabbing a specific Article by id, populate it with it's note
-  router.get("/articles/:id", function(req, res) {
+  router.get("/savedarticles/:id", function(req, res) {
     // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
     db.Article.findOne({ _id: req.params.id })
       // ..and populate all of the notes associated with it
@@ -76,6 +70,7 @@ router.get("/findarticles", function(req, res) {
       .then(function(dbArticle) {
         // If we were able to successfully find an Article with the given id, send it back to the client
         res.json(dbArticle);
+        console.log(dbArticle)
       })
       .catch(function(err) {
         // If an error occurred, send it to the client

@@ -13,15 +13,37 @@ class Header extends React.Component {
 
     goToSaved = () => {
         this.setState({
-            seeSaved: true
+            seeSaved: true,
+            articles: []
         })
 
-        console.log(this.state)
+        const savedArticles = [localStorage.getItem("ids").split(",")];
+        console.log(savedArticles)
+
+        savedArticles[0].forEach(element =>
+            
+            axios.get("/savedarticles/" + element).then(response => {
+
+                const newArticle = [response.data];
+
+                console.log(response.data);
+                this.setState(prevState => {
+                    return {
+                        articles: [...prevState.articles, ...newArticle]
+                    }
+                })
+
+            })
+
+        )
+
+        console.log(this.state.articles)
     }
 
     goHome = () => {
         this.setState({
-            seeSaved: false
+            seeSaved: false,
+            articles: []
         })
         console.log(this.state)
     }
@@ -88,6 +110,7 @@ class Header extends React.Component {
                 </header>
 
                 <ArticleResults
+                seeSaved={this.state.seeSaved}
                 articles={this.state.articles}
                 />
 
