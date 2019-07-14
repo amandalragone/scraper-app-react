@@ -4,8 +4,12 @@ var cheerio = require("cheerio");
 var db = require("../models");
 const path = require("path");
 
-router.get("/", function(req, res) {
+router.use(function(req, res) {
   res.sendFile(path.join(__dirname, "../client/public/index.html"));
+});
+
+router.get("/", function(req, res) {
+  console.log("Hi")
 });
 
 router.get("/scrape", function(req, res) {
