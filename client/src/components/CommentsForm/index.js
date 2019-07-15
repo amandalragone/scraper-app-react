@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 class CommentsForm extends React.Component {
 
@@ -24,12 +25,14 @@ class CommentsForm extends React.Component {
     handleFormSubmit = event => {
 
         event.preventDefault();
+        const { comment } = this.state;
 
-        alert("Username: " +  this.state.userName + " / Comment: " +  this.state.comment);
+        axios.post("/articles/" + event.target.id, {comment}).then(response => {
 
-        this.setState({
-            userName: "",
-            comment: ""
+            console.log(response)
+            this.setState({
+                comment: ""
+            })
         })
 
     }
@@ -39,7 +42,7 @@ class CommentsForm extends React.Component {
         return (
 
             <form>
-
+                <h2>{this.props.title}</h2>
                 <div className="form-group">
                     <label for="comment">Comment:</label>
                     <input 
@@ -51,7 +54,7 @@ class CommentsForm extends React.Component {
                     onChange={this.handleInputChange}/>
                 </div>
                 
-                <button type="submit" className="btn btn-primary" onClick={this.handleFormSubmit}>Submit</button>
+                <button id={this.props.id} type="submit" className="btn btn-primary" onClick={this.handleFormSubmit}>Submit</button>
             
             </form>
 

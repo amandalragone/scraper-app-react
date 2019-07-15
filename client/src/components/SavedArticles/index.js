@@ -1,15 +1,24 @@
 import React from "react";
 import CommentsForm from "./../CommentsForm";
 import CommentsDisplay from "./../CommentsDisplay";
+import axios from "axios";
 
 class savedArticles extends React.Component {
 
     state = {
-        comments: false
+        comments: false,
+        articleId: ""
     }
 
-    seeComments = () => {
-        this.setState({comments: true})
+    seeComments = event => {
+        console.log(event.target.id)
+        this.setState({
+            comments: true,
+            articleId: event.target.id
+        })
+
+        axios.get("/seeComments/" + event.target.id).then(response => console.log(response))
+    
     }
 
     render() {
@@ -48,12 +57,15 @@ class savedArticles extends React.Component {
                                             </button>
                                         </a>
                                         <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <CommentsForm />
+                                            <CommentsForm 
+                                            title={article.title}
+                                            id={article._id}
+                                            />
                                         </div>
                                     </h6>
                                 </div>
                                 
-                                <button onClick={() => this.seeComments(article._id)}>See Comments</button>
+                                <button id={article._id} onClick={e => this.seeComments(e)}>See Comments</button>
                                 <button onClick={() => this.deleteArticle(article._id)}>Delete from saved</button>
                             
                             </li>
@@ -64,7 +76,7 @@ class savedArticles extends React.Component {
 
                 <div className="col-6">
                     
-                    <CommentsDisplay comments={this.state.comments} />
+                    <CommentsDisplay comments={this.state.comments} articleId={this.state.articleId}/>
                 </div>
                 
             </div>
