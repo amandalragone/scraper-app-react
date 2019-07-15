@@ -41,17 +41,6 @@ class CommentsForm extends React.Component {
             <form>
 
                 <div className="form-group">
-                    <label for="userName">User Name:</label>
-                    <input 
-                    type="text" 
-                    className="form-control" 
-                    placeholder="John Doe" 
-                    name="userName" 
-                    value={this.state.userName} 
-                    onChange={this.handleInputChange}/>
-                </div>
-
-                <div className="form-group">
                     <label for="comment">Comment:</label>
                     <input 
                     type="text" 

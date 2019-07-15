@@ -1,53 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import ArticleResults from "../ArticleResults";
 import axios from "axios";
-import Footer from '../Footer';
-
+import ArticleResults from "../ArticleResults";
+import SavedArticles from "../SavedArticles";
 
 class Header extends React.Component {
 
     state = {
         seeSaved: false,
-        articles: []
-    }
-
-    goToSaved = () => {
-        this.setState({
-            seeSaved: true,
-            articles: []
-        })
-
-        const savedArticles = [localStorage.getItem("ids").split(",")];
-        console.log(savedArticles)
-
-        savedArticles[0].forEach(element =>
-            
-            axios.get("/savedarticles/" + element).then(response => {
-
-                const newArticle = [response.data];
-
-                console.log(response.data);
-                this.setState(prevState => {
-                    return {
-                        articles: [...prevState.articles, ...newArticle]
-                    }
-                })
-
-            })
-
-        )
-
-        console.log(this.state.articles)
-    }
-
-    goHome = () => {
-        this.setState({
-            seeSaved: false,
-            articles: []
-        })
-        console.log(this.state)
+        articles: [],
+        savedArticles: []
     }
 
     scrapeArticles = () => {
@@ -61,6 +24,7 @@ class Header extends React.Component {
         axios.get("/findArticles").then(res => {
     
             this.setState({
+                savedArticles: [],
                 articles: res.data
             })
     
@@ -71,8 +35,47 @@ class Header extends React.Component {
 
     clearArticles = () => {
         this.setState({
-            articles: []
+            articles: [],
+            savedArticles: []
         })
+    }
+
+    goToSaved = () => {
+        this.setState({
+            seeSaved: true,
+            articles: [],
+            savedArticles: []
+        })
+    
+        const viewSaved = [localStorage.getItem("ids").split(",")];
+
+        viewSaved[0].forEach(element =>
+            
+            axios.get("/savedarticles/" + element).then(response => {
+
+                const newArticle = [response.data];
+
+                console.log(response.data);
+                this.setState(prevState => {
+                    return {
+                        savedArticles: [...prevState.savedArticles, ...newArticle]
+                    }
+                })
+
+            })
+
+        )
+
+        console.log(this.state.articles)
+    }
+
+    goHome = () => {
+        this.setState({
+            seeSaved: false,
+            articles: [],
+            savedArticles: []
+        })
+        console.log(this.state)
     }
 
 
@@ -82,7 +85,6 @@ class Header extends React.Component {
 
             <Router>
 
-            
             <div>
 
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -97,7 +99,7 @@ class Header extends React.Component {
                             <Link to={"/"} class="nav-link" onClick={this.goHome}>Home</Link>
                         </li>
                         <li class="nav-item">
-                            <Link to="/saved" class="nav-link" onClick={this.goToSaved}>Saved</Link>
+                            <Link to={"/saved"} class="nav-link" onClick={this.goToSaved}>Saved</Link>
                         </li>
                         </ul>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.scrapeArticles}>Scrape New Articles</button>
@@ -105,18 +107,34 @@ class Header extends React.Component {
                     </div>
                     </nav>
 
-                <header>
-
-                    {this.state.seeSaved ? <h1>Saved articles</h1> : <h1>BBC Scraper App</h1>}
+                    {this.state.seeSaved ? (
                     
-                </header>
+                    <div>
 
-                <ArticleResults
-                seeSaved={this.state.seeSaved}
-                articles={this.state.articles}
-                />
+                        <header>
+                            <h1>Saved articles</h1>
+                        </header>
 
-                <Footer/>
+                        <SavedArticles 
+                        savedArticles={this.state.savedArticles}
+                        />
+
+                    </div>
+
+                    ) : (
+
+                    <div>
+
+                        <header>
+                            <h1>BBC Scraper App</h1>
+                        </header>
+
+                        <ArticleResults
+                        articles={this.state.articles}
+                        />
+                    </div>
+
+                    )}
 
             </div>
 

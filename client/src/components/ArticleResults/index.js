@@ -1,7 +1,6 @@
 import React from "react";
-import CommentsDisplay from "../CommentsDisplay";
 import CommentsForm from "../CommentsForm";
-import axios from "axios"
+
 
 class ArticleResults extends React.Component {
 
@@ -44,7 +43,6 @@ class ArticleResults extends React.Component {
     render() {
 
         return (
-
             <ul>
               {this.props.articles.map(article => 
                   <li key={article._id}>
@@ -53,38 +51,11 @@ class ArticleResults extends React.Component {
                         {article.title}
                       </strong>
                     </a>
-                    {
-                     this.props.seeSaved ? (
-
-                      <div>
-                      <button onClick={() => this.deleteArticle(article._id)}>Delete from saved</button>
-                      <button id={article._id} onClick={this.seeNotes}>ArticleNotes</button>
-                      </div>
-                      
-                     ) : (
-                      <button id={article._id} onClick={this.saveArticle}>Save Article</button>
-                     )
-                    }
-                  
+                    <button id={article._id} onClick={this.saveArticle}>Save Article</button>
                   </li>
                 
-                )
-                }
-
-                    {
-                      this.state.seeComments && 
-                      <div className="row">
-                      <div className="col-6">
-                        <CommentsForm />
-                      </div>
-                      <div className="col-6">
-                        <CommentsDisplay 
-                        />
-                      </div>
-                    </div>
-                    }
+                )}
             </ul>
-
         )
     
     }
