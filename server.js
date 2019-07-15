@@ -21,6 +21,10 @@ app.use(express.json());
 // Making public a static folder
 app.use(express.static("public"));
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
 app.use(routes)
 
 // Connecting to the Mongo DB
