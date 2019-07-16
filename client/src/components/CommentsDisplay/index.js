@@ -12,8 +12,10 @@ class CommentsDisplay extends React.Component {
         axios.get("/seeComments/" + this.props.articleId).then(response => {
 
             this.setState({
-                commentsArr: response.data
+                commentsArr: response.data[0].note.body
             })
+
+            console.log("state = " + this.state.commentsArr)
 
         })
     }

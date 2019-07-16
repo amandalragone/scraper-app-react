@@ -12,8 +12,7 @@ class ArticleResults extends React.Component {
     saveArticle = event => {
 
         const id = event.target.id;
-       
-  
+      
           this.setState(prevState => {
 
             const newId = [id];
@@ -23,6 +22,8 @@ class ArticleResults extends React.Component {
               savedArticles: allIds
             }
           })
+
+          console.log(this.state)
         
     }
 
