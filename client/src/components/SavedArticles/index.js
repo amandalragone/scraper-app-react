@@ -6,18 +6,29 @@ import axios from "axios";
 class savedArticles extends React.Component {
 
     state = {
-        comments: false,
-        articleId: ""
+        comment: "",
+        seeComments: true
     }
 
     seeComments = event => {
         console.log(event.target.id)
+
         this.setState({
-            comments: true,
-            articleId: event.target.id
+            seeComments: true
         })
 
-        axios.get("/seeComments/" + event.target.id).then(response => console.log(response))
+        axios.get("/seeComments/" + event.target.id).then(response => {
+            console.log(response.data[0].note.body) 
+
+            if(!response.data[0].note.body) {
+                this.setState({
+                    comment: null
+                })
+            } else {
+                this.setState({ comment: response.data[0].note.body })
+            }
+        
+        })
     
     }
 
@@ -76,7 +87,7 @@ class savedArticles extends React.Component {
 
                 <div className="col-6">
                     
-                    <CommentsDisplay comments={this.state.comments} articleId={this.state.articleId}/>
+                    <CommentsDisplay comment={this.state.comment} seeComments={this.state.seeComments}/>
                 </div>
                 
             </div>
